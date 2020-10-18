@@ -155,7 +155,6 @@ store_refresh_token() {
   fi
 }
 
-
 refresh_access_token() {
   local -r client_id=$(get_client_id)
   assert_value "client_id" "[store provider]: client_id not found"
@@ -164,7 +163,7 @@ refresh_access_token() {
   assert_value "client_secret" "[store provider]: client_secret not found"
 
   local -r refresh_token=$(get_refresh_token)
-  assert_value "client_secret" "[store provider]: refresh_token not found"
+  assert_value "refresh_token" "[store provider]: refresh_token not found"
 
   local -r grant_type="refresh_token"
 
