@@ -197,7 +197,7 @@ get_access_token() {
 }
 
 case "${command}" in
-  init)
+  authorize)
     store_client_info
     store_refresh_token
     ;;

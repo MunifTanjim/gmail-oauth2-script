@@ -70,7 +70,7 @@ Store your OAuth2 Client's credentials in a Bitwarden item with the following cu
 gmail-oauth2.sh <COMMAND> [ACCOUNT_ID]
 
 Commands:
-  init           Initializes GNOME Keyring
+  authorize      Perform the initial authorization steps
   access_token   Prints Access Token
 
 Flags:
@@ -79,15 +79,15 @@ Flags:
   --secret-id    Search Term for Bitwarden Item      (default: "client.oauth2.com.google.mail")
 ```
 
-**Initial Setup**:
+**Initial Authorization**:
 
 Reads the `client_id` and `client_secret` from Bitwarden, stores them in GNOME Keyring.
-Gets a `refresh_token` using authorization code flow and stores it in GNOME Keyring.
+Obtains a `refresh_token` after successful authorization and stores it in GNOME Keyring.
 
 ```sh
-gmail-oauth2.sh init me@example.com
+gmail-oauth2.sh authorize me@example.com
 # or
-gmail-oauth2.sh init --account-id me@example.com
+gmail-oauth2.sh authorize --account-id me@example.com
 ```
 
 **Get Access Token**:
