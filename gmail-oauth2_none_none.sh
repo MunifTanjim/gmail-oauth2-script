@@ -62,7 +62,7 @@ get_refresh_token() {
 
   local -r grant_type="authorization_code"
 
-  let -r refresh_token=$(curl --silent \
+  local -r refresh_token=$(curl --silent \
     --request POST \
     --data "code=${authorization_code}&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&grant_type=${grant_type}" \
     https://accounts.google.com/o/oauth2/token | jq -r '.refresh_token')
