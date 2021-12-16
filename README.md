@@ -45,7 +45,7 @@ gmail-oauth2.sh refresh_token --client-id CLIENT_ID --client-secret CLIENT_SECRE
 **Get Access Token**:
 
 ```sh
-gmail-oauth2.sh access_token --client-id CLIENT_ID --client-secret CLIENT_SECRET --refresh_token REFRESH_TOKEN
+gmail-oauth2.sh access_token --client-id CLIENT_ID --client-secret CLIENT_SECRET --refresh-token REFRESH_TOKEN
 ```
 
 ### `gmail-oauth2_bitwarden_secret-tool.sh`
