@@ -50,14 +50,18 @@ get_refresh_token() {
   assert_value "client_secret" "missing: client_secret"
 
   local -r scope="https://mail.google.com/"
-  local -r redirect_uri="urn:ietf:wg:oauth:2.0:oob"
+  local -r redirect_uri="https://localhost"
   local -r response_type="code"
 
   echo_err ""
-  echo_err "For authorization code, visit this url and follow the instructions:"
+  echo_err "1. Ensure that your OAuth 2.0 Client ID has 'https://localhost' registered as an authorized redirect URL here:"
+  echo_err "  https://console.cloud.google.com/apis/credentials"
+  echo_err ""
+  echo_err "2. For authorization code, visit this url and follow the instructions:"
   echo_err "  https://accounts.google.com/o/oauth2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}"
   echo_err ""
-  read -p "Enter authorization code: " authorization_code
+  echo_err "3. After your browser visits 'https://localhost', look at the URL bar."
+  read -p "Copy the value of the 'code' parameter and paste it here: " authorization_code
   echo_err ""
 
   local -r grant_type="authorization_code"
