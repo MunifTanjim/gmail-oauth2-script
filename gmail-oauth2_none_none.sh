@@ -58,7 +58,7 @@ get_refresh_token() {
   echo_err "  https://console.cloud.google.com/apis/credentials"
   echo_err ""
   echo_err "2. For authorization code, visit this url and follow the instructions:"
-  echo_err "  https://accounts.google.com/o/oauth2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}"
+  echo_err "  https://accounts.google.com/o/oauth2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}&access_type=offline&prompt=consent"
   echo_err ""
   echo_err "3. After your browser visits 'https://localhost', look at the URL bar."
   read -p "Copy the value of the 'code' parameter and paste it here: " authorization_code
