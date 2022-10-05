@@ -50,18 +50,16 @@ get_refresh_token() {
   assert_value "client_secret" "missing: client_secret"
 
   local -r scope="https://mail.google.com/"
-  local -r redirect_uri="https://localhost"
+  local -r redirect_uri="http://127.0.0.1"
   local -r response_type="code"
 
   echo_err ""
-  echo_err "1. Ensure that your OAuth 2.0 Client ID has 'https://localhost' registered as an authorized redirect URL here:"
-  echo_err "  https://console.cloud.google.com/apis/credentials"
+  echo_err "For authorization code, visit this url and follow the instructions:"
+  echo_err "  https://accounts.google.com/o/oauth2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}"
   echo_err ""
-  echo_err "2. For authorization code, visit this url and follow the instructions:"
-  echo_err "  https://accounts.google.com/o/oauth2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}&access_type=offline&prompt=consent"
+  echo_err "Wait till you're redirected to '${redirect_uri}' and copy the 'code' query param from the url."
   echo_err ""
-  echo_err "3. After your browser visits 'https://localhost', look at the URL bar."
-  read -p "Copy the value of the 'code' parameter and paste it here: " authorization_code
+  read -p "Enter authorization code: " authorization_code
   echo_err ""
 
   local -r grant_type="authorization_code"
@@ -69,13 +67,14 @@ get_refresh_token() {
   local -r response=$(curl --silent \
     --request POST \
     --data "code=${authorization_code}&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&grant_type=${grant_type}" \
-    https://accounts.google.com/o/oauth2/token )
+    https://accounts.google.com/o/oauth2/token)
 
-  local -r refresh_token=$( echo "$response" | jq -r '.refresh_token' )
+  local -r refresh_token=$(echo "${response}" | jq -r '.refresh_token')
 
-  if [ "$refresh_token" = "null" ]; then
+  if [ "${refresh_token}" = "null" ]; then
     echo_err "Could not extract refresh token: "
     echo_err "${response}"
+    exit 1
   fi
 
   printf "${refresh_token}"
