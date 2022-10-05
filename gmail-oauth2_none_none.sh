@@ -50,22 +50,32 @@ get_refresh_token() {
   assert_value "client_secret" "missing: client_secret"
 
   local -r scope="https://mail.google.com/"
-  local -r redirect_uri="urn:ietf:wg:oauth:2.0:oob"
+  local -r redirect_uri="http://127.0.0.1"
   local -r response_type="code"
 
   echo_err ""
   echo_err "For authorization code, visit this url and follow the instructions:"
   echo_err "  https://accounts.google.com/o/oauth2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}"
   echo_err ""
+  echo_err "Wait till you're redirected to '${redirect_uri}' and copy the 'code' query param from the url."
+  echo_err ""
   read -p "Enter authorization code: " authorization_code
   echo_err ""
 
   local -r grant_type="authorization_code"
 
-  local -r refresh_token=$(curl --silent \
+  local -r response=$(curl --silent \
     --request POST \
     --data "code=${authorization_code}&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&grant_type=${grant_type}" \
-    https://accounts.google.com/o/oauth2/token | jq -r '.refresh_token')
+    https://accounts.google.com/o/oauth2/token)
+
+  local -r refresh_token=$(echo "${response}" | jq -r '.refresh_token')
+
+  if [ "${refresh_token}" = "null" ]; then
+    echo_err "Could not extract refresh token: "
+    echo_err "${response}"
+    exit 1
+  fi
 
   printf "${refresh_token}"
 }
