@@ -66,10 +66,17 @@ get_refresh_token() {
 
   local -r grant_type="authorization_code"
 
-  local -r refresh_token=$(curl --silent \
+  local -r response=$(curl --silent \
     --request POST \
     --data "code=${authorization_code}&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&grant_type=${grant_type}" \
-    https://accounts.google.com/o/oauth2/token | jq -r '.refresh_token')
+    https://accounts.google.com/o/oauth2/token )
+
+  local -r refresh_token=$( echo "$response" | jq -r '.refresh_token' )
+
+  if [ "$refresh_token" = "null" ]; then
+    echo_err "Could not extract refresh token: "
+    echo_err "${response}"
+  fi
 
   printf "${refresh_token}"
 }
