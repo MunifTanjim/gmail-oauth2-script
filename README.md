@@ -20,6 +20,9 @@ curl --progress-bar https://raw.githubusercontent.com/MunifTanjim/gmail-oauth2-s
 chmod u+x ~/.local/bin/gmail-oauth2.sh
 ```
 
+If you need one, [create an OAuth client](https://console.cloud.google.com/apis/credentials/oauthclient).
+It is recommented to use "Desktop app" as OAuth client type.
+
 ## Variants
 
 There are several variants of the script using different tools for cache, storage or secret management.
