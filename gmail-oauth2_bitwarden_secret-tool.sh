@@ -138,7 +138,7 @@ store_refresh_token() {
 
     echo_err ""
     echo_err "For authorization code, visit this url and follow the instructions:"
-    echo_err "  https://accounts.google.com/o/oauth2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}"
+    echo_err "  https://accounts.google.com/o/oauth2/v2/auth?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=${response_type}&scope=${scope}&access_type=offline"
     echo_err ""
     echo_err "Wait till you're redirected to '${redirect_uri}' and copy the 'code' query param from the url."
     echo_err ""
@@ -150,7 +150,7 @@ store_refresh_token() {
     local -r response=$(curl --silent \
       --request POST \
       --data "code=${authorization_code}&client_id=${client_id}&client_secret=${client_secret}&redirect_uri=${redirect_uri}&grant_type=${grant_type}" \
-      https://accounts.google.com/o/oauth2/token)
+      https://oauth2.googleapis.com/token)
 
     refresh_token=$(echo "${response}" | jq -r '.refresh_token')
 
@@ -180,7 +180,7 @@ refresh_access_token() {
   local -r access_token_blob=$(curl --silent \
     --request POST \
     --data "client_id=${client_id}&client_secret=${client_secret}&refresh_token=${refresh_token}&grant_type=${grant_type}" \
-    "https://accounts.google.com/o/oauth2/token")
+    "https://oauth2.googleapis.com/token")
 
   local -r access_token=$(echo "${access_token_blob}" | jq -r '.access_token')
   local -r expires_in=$(echo "${access_token_blob}" | jq -r '.expires_in')
